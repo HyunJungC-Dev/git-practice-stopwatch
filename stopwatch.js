@@ -89,15 +89,23 @@ const stopWatch = (() => {
   $lapBtn.onclick = function (e) {
     stopWatch.lap();
     const $laps = document.querySelector('.laps');
+    const lastLapTime = laps[laps.length - 1];
     $laps.innerHTML =
       `<div class="lap-title">Laps</div>
        <div class="lap-title">Title</div>` +
-      laps.reduce(
-        (pre, cur, idx) =>
-          pre +
-          `<div class="lap-index">${idx}</div><div class="lap-time">${cur.min}:${cur.sec}:${cur.ms}</div>`,
-        ''
-      );
+      laps
+        .slice(0, laps.length - 1)
+        .reduce(
+          (pre, cur, idx) =>
+            pre +
+            `<div class="lap-index">${idx}</div><div class="lap-time">${cur.min}:${cur.sec}:${cur.ms}</div>`,
+          ''
+        ) +
+      `<div class="lap-index last-lap-time">${
+        laps.length - 1
+      }</div><div class="lap-time last-lap-time">${lastLapTime.min}:${lastLapTime.sec}:${
+        lastLapTime.ms
+      }</div>`;
 
     $resetBtn.onclick = function (e) {
       stopWatch.reset();
