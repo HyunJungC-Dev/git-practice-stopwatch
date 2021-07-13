@@ -26,3 +26,15 @@
   font-size: 30px;
   width: 100px;
 }
+
+.laps {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+}
+.lap-title,
+.lap-index,
+.lap-time {
+  font-size: 25px;
+  width: 200px;
+}
