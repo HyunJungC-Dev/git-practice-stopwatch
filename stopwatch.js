@@ -1,5 +1,5 @@
 let lap = [];
-let runningStatus = '';
+let runningStatus = 'stop'; // stop | paused | running
 let timerId;
 let time = {
   min: 0,
@@ -16,9 +16,6 @@ const stopWatch = (() => {
   const $min = document.querySelector('.display-m');
   const $sec = document.querySelector('.display-s');
   const $ms = document.querySelector('.display-ms');
-  const $startBtn = document.querySelector('.startBtn');
-  const $lapBtn = document.querySelector('.lapBtn');
-  const $resetBtn = document.querySelector('.resetBtn');
 
   const setTime = (_ms) => {
     if (time.ms >= 100) {
@@ -41,7 +38,26 @@ const stopWatch = (() => {
     }, 10);
   };
 
-  return { start };
+  const stop = () => {
+    clearInterval(timerId);
+  };
+
+  return { start, stop };
 })();
 
-stopWatch.start();
+(function init() {
+  const $startBtn = document.querySelector('.startBtn');
+
+  $startBtn.onclick = function (e) {
+    if (runningStatus === 'stop' || runningStatus === 'paused') {
+      runningStatus = 'running';
+      this.textContent = 'pause';
+      stopWatch.start();
+      return;
+    }
+
+    runningStatus = 'paused';
+    this.textContent = 'resume';
+    stopWatch.stop();
+  };
+})();
