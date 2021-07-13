@@ -16,6 +16,7 @@ const stopWatch = (() => {
   const $min = document.querySelector('.display-m');
   const $sec = document.querySelector('.display-s');
   const $ms = document.querySelector('.display-ms');
+  const $startBtn = document.querySelector('.startBtn');
 
   const setTime = (ms, sec, min) => {
     time.ms = ms;
@@ -37,17 +38,24 @@ const stopWatch = (() => {
   };
 
   const start = () => {
+    $startBtn.textContent = 'pause';
+    runningStatus = 'running';
     timerId = setInterval(() => {
       setTime(time.ms + 1);
     }, 10);
   };
 
   const stop = () => {
+    $startBtn.textContent = 'resume';
+    runningStatus = 'paused';
     clearInterval(timerId);
   };
 
   const reset = () => {
     if (runningStatus !== 'paused') return;
+
+    $startBtn.textContent = 'Start';
+    document.querySelector('.laps').innerHTML = '';
     runningStatus = 'stop';
     setTime(0, 0, 0);
     lap = [];
@@ -62,14 +70,10 @@ const stopWatch = (() => {
 
   $startBtn.onclick = function (e) {
     if (runningStatus === 'stop' || runningStatus === 'paused') {
-      runningStatus = 'running';
-      this.textContent = 'pause';
       stopWatch.start();
       return;
     }
 
-    runningStatus = 'paused';
-    this.textContent = 'resume';
     stopWatch.stop();
   };
 
