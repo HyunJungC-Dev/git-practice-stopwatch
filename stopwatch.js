@@ -1,4 +1,4 @@
-let laps = [{ min: 01, sec: 02, ms: 03 }];
+let laps = [];
 let runningStatus = 'stop'; // stop | paused | running
 let timerId;
 let time = {
