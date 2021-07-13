@@ -8,6 +8,11 @@
   background-color: pink;
   text-align: center;
 }
+
+.display > span {
+  display: inline-block;
+  width: 60px;
+}
 .buttons {
   text-align: center;
   margin-top: 10px;
