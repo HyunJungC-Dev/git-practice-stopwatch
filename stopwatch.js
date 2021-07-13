@@ -17,6 +17,7 @@ const stopWatch = (() => {
   const $sec = document.querySelector('.display-s');
   const $ms = document.querySelector('.display-ms');
   const $startBtn = document.querySelector('.startBtn');
+  const $lapBtn = document.querySelector('.lapBtn');
 
   const setTime = (ms, sec, min) => {
     time.ms = ms;
@@ -43,18 +44,20 @@ const stopWatch = (() => {
     timerId = setInterval(() => {
       setTime(time.ms + 1);
     }, 10);
+    $lapBtn.disabled = false;
   };
 
   const stop = () => {
     $startBtn.textContent = 'resume';
     runningStatus = 'paused';
     clearInterval(timerId);
+    $lapBtn.disabled = true;
   };
 
   const lap = () => {
-    laps.push({ min: $min.textContent, sec: $sec.textContent, ms: $ms.textContent });
+    laps = [...laps, { min: $min.textContent, sec: $sec.textContent, ms: $ms.textContent }];
   };
-  
+
   const reset = () => {
     if (runningStatus !== 'paused') return;
 
@@ -62,17 +65,18 @@ const stopWatch = (() => {
     document.querySelector('.laps').innerHTML = '';
     runningStatus = 'stop';
     setTime(0, 0, 0);
-    lap = [];
+    laps = [];
   };
 
-  return { start, stop, reset };
-
+  return { start, stop, reset, lap };
 })();
 
 (function init() {
   const $startBtn = document.querySelector('.startBtn');
   const $lapBtn = document.querySelector('.lapBtn');
   const $resetBtn = document.querySelector('.resetBtn');
+
+  $lapBtn.disabled = true;
 
   $startBtn.onclick = function (e) {
     if (runningStatus === 'stop' || runningStatus === 'paused') {
@@ -81,7 +85,6 @@ const stopWatch = (() => {
     }
     stopWatch.stop();
   };
-
 
   $lapBtn.onclick = function (e) {
     stopWatch.lap();
@@ -96,7 +99,8 @@ const stopWatch = (() => {
         ''
       );
 
-  $resetBtn.onclick = function (e) {
-    stopWatch.reset();
+    $resetBtn.onclick = function (e) {
+      stopWatch.reset();
+    };
   };
 })();
