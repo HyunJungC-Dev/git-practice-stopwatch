@@ -41,8 +41,7 @@ const stopWatch = (() => {
     }, 10);
   };
 
-  const lap = () => {
-    laps.push({ min: $min.textContent, sec: $sec.textContent, ms: $ms.textContent });
+  const renderLaps = () => {
     const $laps = document.querySelector('.laps');
     $laps.innerHTML =
       `<div class="lap-title">Laps</div>
@@ -53,6 +52,11 @@ const stopWatch = (() => {
           `<div class="lap-index">${idx}</div><div class="lap-time">${cur.min}:${cur.sec}:${cur.ms}</div>`,
         ''
       );
+  };
+
+  const lap = () => {
+    laps.push({ min: $min.textContent, sec: $sec.textContent, ms: $ms.textContent });
+    renderLaps();
   };
 
   return { start, lap };
