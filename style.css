@@ -23,6 +23,7 @@
 .startBtn,
 .lapBtn,
 .resetBtn {
+  text-align: center;
   font-size: 30px;
-  width: 100px;
+  width: 130px;
 }
