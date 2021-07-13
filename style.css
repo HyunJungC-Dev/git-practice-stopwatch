@@ -1,0 +1,23 @@
+.stopwatch {
+  width: 400px;
+  margin: auto;
+}
+
+.display {
+  font-size: 50px;
+  background-color: pink;
+  text-align: center;
+}
+.buttons {
+  text-align: center;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.startBtn,
+.lapBtn,
+.resetBtn {
+  font-size: 30px;
+  width: 100px;
+}
