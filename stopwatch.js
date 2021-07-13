@@ -1,14 +1,14 @@
-let lap = [];
+let laps = [{ min: 01, sec: 02, ms: 03 }];
 let runningStatus = '';
 let timerId;
 let time = {
   min: 0,
   sec: 0,
-  ms: 0,
+  ms: 0
 };
 
 const util = (() => {
-  const formatTime = (time) => (time < 10 ? '0' + time : time);
+  const formatTime = time => (time < 10 ? '0' + time : time);
   return { formatTime };
 })();
 
@@ -20,7 +20,7 @@ const stopWatch = (() => {
   const $lapBtn = document.querySelector('.lapBtn');
   const $resetBtn = document.querySelector('.resetBtn');
 
-  const setTime = (_ms) => {
+  const setTime = _ms => {
     if (time.ms >= 100) {
       time.ms = 0;
       time.sec++;
@@ -41,7 +41,22 @@ const stopWatch = (() => {
     }, 10);
   };
 
-  return { start };
+  const lap = () => {
+    laps.push({ min: $min.textContent, sec: $sec.textContent, ms: $ms.textContent });
+    const $laps = document.querySelector('.laps');
+    $laps.innerHTML =
+      `<div class="lap-title">Laps</div>
+     <div class="lap-title">Title</div>` +
+      laps.reduce(
+        (pre, cur, idx) =>
+          pre +
+          `<div class="lap-index">${idx}</div><div class="lap-time">${cur.min}:${cur.sec}:${cur.ms}</div>`,
+        ''
+      );
+  };
+
+  return { start, lap };
 })();
 
-stopWatch.start();
+document.querySelector('.startBtn').addEventListener('click', stopWatch.start);
+document.querySelector('.lapBtn').addEventListener('click', stopWatch.lap);
