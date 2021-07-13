@@ -16,8 +16,13 @@ const stopWatch = (() => {
   const $min = document.querySelector('.display-m');
   const $sec = document.querySelector('.display-s');
   const $ms = document.querySelector('.display-ms');
+  const $startBtn = document.querySelector('.startBtn');
 
-  const setTime = _ms => {
+  const setTime = (ms, sec, min) => {
+    time.ms = ms;
+    time.sec = sec ?? time.sec;
+    time.min = min ?? time.min;
+
     if (time.ms >= 100) {
       time.ms = 0;
       time.sec++;
@@ -33,37 +38,50 @@ const stopWatch = (() => {
   };
 
   const start = () => {
+    $startBtn.textContent = 'pause';
+    runningStatus = 'running';
     timerId = setInterval(() => {
-      setTime(time.ms++);
+      setTime(time.ms + 1);
     }, 10);
   };
 
   const stop = () => {
+    $startBtn.textContent = 'resume';
+    runningStatus = 'paused';
     clearInterval(timerId);
   };
 
   const lap = () => {
     laps.push({ min: $min.textContent, sec: $sec.textContent, ms: $ms.textContent });
   };
+  
+  const reset = () => {
+    if (runningStatus !== 'paused') return;
 
-  return { start, stop, lap };
+    $startBtn.textContent = 'Start';
+    document.querySelector('.laps').innerHTML = '';
+    runningStatus = 'stop';
+    setTime(0, 0, 0);
+    lap = [];
+  };
+
+  return { start, stop, reset };
+
 })();
 
 (function init() {
   const $startBtn = document.querySelector('.startBtn');
   const $lapBtn = document.querySelector('.lapBtn');
+  const $resetBtn = document.querySelector('.resetBtn');
+
   $startBtn.onclick = function (e) {
     if (runningStatus === 'stop' || runningStatus === 'paused') {
-      runningStatus = 'running';
-      this.textContent = 'pause';
       stopWatch.start();
       return;
     }
-
-    runningStatus = 'paused';
-    this.textContent = 'resume';
     stopWatch.stop();
   };
+
 
   $lapBtn.onclick = function (e) {
     stopWatch.lap();
@@ -77,5 +95,8 @@ const stopWatch = (() => {
           `<div class="lap-index">${idx}</div><div class="lap-time">${cur.min}:${cur.sec}:${cur.ms}</div>`,
         ''
       );
+
+  $resetBtn.onclick = function (e) {
+    stopWatch.reset();
   };
 })();
